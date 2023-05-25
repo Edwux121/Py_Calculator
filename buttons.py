@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
+from mysql_conn.mysql_connect import Mysql_connect
 
 class Buttons:
     """Class for the calculator number buttons"""
@@ -9,6 +10,8 @@ class Buttons:
         self.txt_frame = txt_frame
         self.last_operator = ""
         self.last_index = 0
+
+        
         
     def define_buttons(self):
         self.validate = self.myapp.register(self.validation)
@@ -62,10 +65,17 @@ class Buttons:
         elif text == "ENT":
             #If ENT button is pressed convert whole entry to list and perform calculations
             value = self.entry.get()
+            result = eval(value)
+            #Mysql connection
+            self.mysql_conn = Mysql_connect(value, result)
+            self.mysql_conn.connect()
             try:
-                result = eval(value)
                 self.entry.delete(0, tk.END)
                 self.entry.insert(0, float(result))
+
+                #Adding the data to MySQL
+                self.mysql_conn.insert(value, float(result))
+
             except(SyntaxError, ZeroDivisionError, TypeError):
                 messagebox.showerror("Wrong syntax", "Wrong syntax error!")
         elif text == "*" or text == "/" or text == "-" or text == "+" or text == ".":
