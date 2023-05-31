@@ -1,12 +1,17 @@
+import tkinter  as tk 
+from tkinter import * 
+
 import mysql.connector
 from mysql.connector import Error
 
 class Mysql_connect:
     """"Class for handeling mysql connection"""
 
-    def __init__(self, entry_data, answer):
+    def __init__(self, entry_data="1+1", answer=1, frame="placeholder"):
         self.entry_data = entry_data
         self.answer = answer
+        self.frame = frame
+        self.connection = None
 
     def connect(self):
         """Connect to the MySQL"""
@@ -46,8 +51,23 @@ class Mysql_connect:
             cursor.execute(sql_insert_query, qurey_variables)
             self.connection.commit()
 
-            print("Data insert successfull")
-            print(qurey_variables)
-
         except Error as e:
             print("Could not insert data to the database", e)
+
+    def show_data(self, frame):
+        """"Prints data from the Database"""
+
+        try:
+            cursor = self.connection.cursor()
+            cursor.execute("SELECT * FROM calculations LIMIT 10")
+
+            i = 0
+            for entry in cursor:
+                for j in range(len(entry)):
+                    e = Entry(frame, width=10, fg='blue')
+                    e.grid(row=i, column=j)
+                    e.insert(END, entry[j])
+                i = i + 1
+
+        except Error as e:
+            print("Unable to print daata from the database", e)

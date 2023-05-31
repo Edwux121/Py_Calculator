@@ -1,6 +1,7 @@
 import tkinter as tk
 
 from buttons import Buttons
+from history import History
 
 class Main:
     """"Main class for the app"""
@@ -15,6 +16,11 @@ class Main:
         #Defining frame for text/output and filling it in
         self.text_frame = tk.Frame(self.myapp, width=300, height=200)
         self.text_frame.grid(column=0, row=0)
+
+        #Defining History button fram and History class
+        self.history_button_frame = tk.Frame(self.myapp, width=300, height=50)
+        self.history_button_frame.grid(column=0, row=2)
+        self.history = History(self.history_button_frame)
         
         #Defining the buttons.py
         self.buttons = Buttons(self.numbers_frame, self.text_frame)
@@ -30,6 +36,10 @@ class Main:
         tk.Label(self.text_frame, text="").grid(column=0, row=1)
         tk.Label(self.text_frame, text="Calculator!", font = 'Arial 20 bold').grid(column=0, row=2)
         tk.Label(self.text_frame, text="").grid(column=0, row=4)
+
+        #History button
+        tk.Button(self.history_button_frame, text="History", font=("Arial 24"), width=23, height=2,
+                   command=lambda:self.history.open_new_window(self.myapp)).grid(column=0, row=0)
 
     def cloese_app(self):
         self.myapp.mainloop()
