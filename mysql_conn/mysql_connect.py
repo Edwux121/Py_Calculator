@@ -59,14 +59,14 @@ class Mysql_connect:
 
         try:
             cursor = self.connection.cursor()
-            cursor.execute("SELECT * FROM calculations LIMIT 10")
+            cursor.execute("SELECT * FROM calculations")
 
-            i = 0
+            i = 1
             for entry in cursor:
                 for j in range(len(entry)):
-                    e = Entry(frame, width=10, fg='blue')
-                    e.grid(row=i, column=j)
-                    e.insert(END, entry[j])
+                    entries = Entry(frame)
+                    entries.grid(row = i, column = j, padx=2, pady=2)
+                    entries.insert(END, entry[j])
                 i = i + 1
 
         except Error as e:
